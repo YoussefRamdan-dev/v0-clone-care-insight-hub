@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowLeft, Upload, Save, X } from "lucide-react"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/toast"
 
 export default function EditProfilePage() {
   const router = useRouter()

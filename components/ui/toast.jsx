@@ -1,4 +1,3 @@
-// Simplified toast component for notifications
 "use client"
 
 import { createContext, useContext, useState } from "react"
@@ -35,14 +34,28 @@ export function ToastProvider({ children }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-md animate-in fade-in slide-in-from-bottom-5"
-            style={{ animation: "fadeIn 0.3s, slideUp 0.3s" }}
+            className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-md"
+            style={{
+              animation: "fadeIn 0.3s, slideUp 0.3s",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+            }}
           >
             {toast.title && <h3 className="font-medium text-gray-900">{toast.title}</h3>}
             {toast.description && <p className="text-gray-600 text-sm">{toast.description}</p>}
           </div>
         ))}
       </div>
+
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slideUp {
+          from { transform: translateY(20px); }
+          to { transform: translateY(0); }
+        }
+      `}</style>
     </ToastContext.Provider>
   )
 }

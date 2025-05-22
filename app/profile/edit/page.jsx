@@ -11,14 +11,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ArrowLeft, Upload, Save, X } from "lucide-react"
-import { useToast } from "@/components/ui/toast"
+import { ArrowLeft, Upload, Save, X, CheckCircle } from "lucide-react"
 
 export default function EditProfilePage() {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState("profile")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [avatarPreview, setAvatarPreview] = useState(null)
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
 
   const [formData, setFormData] = useState({
     fullName: "Dr. Sarah Johnson",
@@ -49,8 +49,6 @@ export default function EditProfilePage() {
       email: true,
     },
   })
-
-  const { toast } = useToast()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -114,19 +112,32 @@ export default function EditProfilePage() {
       console.log("Saving profile data:", formData)
       // Here you would typically send the data to your API
 
-      toast({
-        title: "Profile updated",
-        description: "Your profile has been successfully updated.",
-      })
+      // Show success message
+      setShowSuccessMessage(true)
 
-      setIsSubmitting(false)
-      router.push("/profile")
+      // Hide success message after 3 seconds
+      setTimeout(() => {
+        setShowSuccessMessage(false)
+        setIsSubmitting(false)
+        router.push("/profile")
+      }, 2000)
     }, 1500)
   }
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] py-8">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Success Message */}
+        {showSuccessMessage && (
+          <div className="fixed top-4 right-4 z-50 bg-green-50 border border-green-200 text-green-800 rounded-lg p-4 flex items-center shadow-lg animate-fade-in">
+            <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+            <div>
+              <h3 className="font-medium">Profile updated</h3>
+              <p className="text-sm">Your profile has been successfully updated.</p>
+            </div>
+          </div>
+        )}
+
         <div className="flex items-center mb-6">
           <button
             onClick={() => router.push("/profile")}
@@ -942,6 +953,15 @@ export default function EditProfilePage() {
           </div>
         </div>
       </div>
+      <style jsx global>{`
+        @keyframes animate-fade-in {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          animation: animate-fade-in 0.3s ease-in-out;
+        }
+      `}</style>
     </div>
   )
 }
